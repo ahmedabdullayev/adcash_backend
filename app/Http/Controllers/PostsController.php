@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,14 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post;
+        $post->content = $request->input('content');
+
+        $post->save();
+
+        $post->categories()->attach($request->input('category_ids'));
+
+        return response()->json($post);
     }
 
     /**
@@ -44,9 +52,11 @@ class PostsController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function showByCategoryId($categoryId)
     {
-        //
+        $category = Category::find($categoryId);
+
+        return response()->json($category->posts);
     }
 
     /**

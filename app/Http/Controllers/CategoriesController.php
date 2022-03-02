@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategoryRequest;
 
 class CategoriesController extends Controller
 {
@@ -14,7 +15,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Category::all());
     }
 
     /**
@@ -30,12 +31,17 @@ class CategoriesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreCategoryRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        $category = new Category;
+        $category->name = $request->input('name');
+
+        $category->save();
+        $validated = $request->validated();
+        return response()->json($validated);
     }
 
     /**
@@ -78,8 +84,10 @@ class CategoriesController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+        return response()->json($category);
     }
 }
