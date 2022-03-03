@@ -17,6 +17,8 @@ use App\Http\Controllers\PostsController;
 
 Route::post('/posts', [PostsController::class, 'store']);
 Route::get('/posts/{categoryId}', [PostsController::class, 'showByCategoryId']);
+Route::get('/post/{post}', [PostsController::class, 'showPost']);
+Route::put('/post', [PostsController::class, 'updatePost']);
 
 Route::get('categories', [CategoriesController::class, 'index']);
 Route::post('category', [CategoriesController::class, 'store']);

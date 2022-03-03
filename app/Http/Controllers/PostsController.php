@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StorePostRequest;
 class PostsController extends Controller
 {
     /**
@@ -31,10 +31,10 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StorePostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $post = new Post;
         $post->content = $request->input('content');
@@ -46,6 +46,20 @@ class PostsController extends Controller
         return response()->json($post);
     }
 
+    public function updatePost(Request $request)
+    {
+        $id = $request->input('id');
+
+        $post = Post::find($id);
+        $post->content = $request->input('content');
+
+        $post->categories()->sync($request->input('category_ids'));
+
+        $post->save();
+
+
+        return response()->json($post);
+    }
     /**
      * Display the specified resource.
      *
@@ -56,7 +70,14 @@ class PostsController extends Controller
     {
         $category = Category::find($categoryId);
 
-        return response()->json($category->posts);
+        return response()->json($category->posts->load('categories'));
+    }
+
+    public function showPost(Post $post)
+    {
+       $post->load('categories');
+
+        return response()->json($post);
     }
 
     /**
