@@ -48,7 +48,7 @@ class PostsController extends Controller
 
     public function showPost(Post $post)
     {
-       $post->load('categories');
+        $post->load('categories');
 
         return response()->json($post);
     }
