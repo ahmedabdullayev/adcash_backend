@@ -16,10 +16,11 @@ use App\Http\Controllers\PostsController;
 */
 
 Route::post('/posts', [PostsController::class, 'store']);
-Route::get('/posts/{categoryId}', [PostsController::class, 'showByCategoryId']);
+Route::get('/posts/{category}', [PostsController::class, 'showByCategoryId']);
 Route::get('/post/{post}', [PostsController::class, 'showPost']);
-Route::put('/post', [PostsController::class, 'updatePost']);
+Route::put('/post/{post}', [PostsController::class, 'updatePost']);
+Route::delete('/post/{post}', [PostsController::class, 'destroy']);
 
 Route::get('categories', [CategoriesController::class, 'index']);
 Route::post('category', [CategoriesController::class, 'store']);
-Route::delete('/category/{id}', [CategoriesController::class, 'destroy']);
+Route::delete('/category/{category}', [CategoriesController::class, 'destroy']);

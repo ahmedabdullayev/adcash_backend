@@ -16,7 +16,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|alpha_dash|max:15|min:1|unique:categories',
+            'name' => 'required|alpha_dash|max:15|min:1',
         ];
     }
     public function failedValidation(Validator $validator)
