@@ -10,7 +10,7 @@
 - And others...
 
 ### Database
-**Many to many relationship **, because a post may belong to one or more categories
+**Many to many relationship**, because a post may belong to one or more categories
 
 ![](erd_adcash.png)
 ![](erd_adcash_2.png)
