@@ -1,3 +1,21 @@
+# Adcash assignment
+### Technologies
+- Laravel 8
+- Vue 3
+- Typescript
+
+### Libraries
+- https://github.com/vueform/multiselect
+- https://kazupon.github.io/vue-i18n/
+- And others...
+
+### Database
+**Many to many relationship **, because a post may belong to one or more categories
+
+![](erd_adcash.png)
+![](erd_adcash_2.png)
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
