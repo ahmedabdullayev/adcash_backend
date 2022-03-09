@@ -43,7 +43,7 @@ class PostsController extends Controller
      */
     public function showByCategoryId(Category $category)
     {
-        return response()->json($category->posts->load('categories'));
+        return response()->json($category->posts->sortBy([['id', 'desc']])->load('categories'));
     }
 
     public function showPost(Post $post)
