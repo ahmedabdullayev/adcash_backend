@@ -15,7 +15,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|alpha_dash|max:15|min:1',
+            'name' => 'required|max:15|min:1|regex:/^[A-Za-z0-9_]+$/',
         ];
     }
     public function failedValidation(Validator $validator)
