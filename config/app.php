@@ -135,7 +135,10 @@ return [
     */
 
     'providers' => [
-
+        /*
+         * My own providers
+         */
+        App\Providers\RepositoryServiceProvider::class,
         /*
          * Laravel Framework Service Providers...
          */

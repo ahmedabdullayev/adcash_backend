@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\PostsRepositoryInterface;
 use App\Models\Category;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class PostsController extends Controller
 {
+    private PostsRepositoryInterface $postsRepository;
+
+    public function __construct(PostsRepositoryInterface $postsRepository)
+    {
+        $this->postsRepository = $postsRepository;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -18,25 +24,28 @@ class PostsController extends Controller
      */
     public function store(StorePostRequest $request): JsonResponse
     {
-        $post = new Post;
-        $post->content = $request->input('content');
-
-        $post->save();
-
-        $post->categories()->attach($request->input('category_ids'));
-
-        return response()->json($post);
+        return response()->json($this->postsRepository->createPost($request));
     }
-
+    /**
+     * Update resource in storage.
+     *
+     * @param  StorePostRequest  $request
+     * @param  Post $post
+     * @return JsonResponse
+     */
     public function updatePost(StorePostRequest $request, Post $post): JsonResponse
     {
-        $post->content = $request->input('content');
-
-        $post->categories()->sync($request->input('category_ids'));
-
-        $post->save();
-
-        return response()->json($post);
+        return response()->json($this->postsRepository->updatePost($request, $post));
+    }
+    /**
+     * Display the specified resource by category id.
+     *
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function showByCategoryId(Category $category): JsonResponse
+    {
+        return response()->json($this->postsRepository->getPostByCategoryId($category));
     }
     /**
      * Display the specified resource.
@@ -44,19 +53,10 @@ class PostsController extends Controller
      * @param Post $post
      * @return JsonResponse
      */
-    public function showByCategoryId(Category $category): JsonResponse
-    {
-        return response()->json($category->posts->sortBy([['id', 'desc']])->load('categories'));
-    }
-
     public function showPost(Post $post): JsonResponse
     {
-        $post->load('categories');
-
-        return response()->json($post);
+        return response()->json($this->postsRepository->getPost($post));
     }
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -65,8 +65,6 @@ class PostsController extends Controller
      */
     public function destroy(Post $post): JsonResponse
     {
-        $post->delete();
-
-        return response()->json($post);
+        return response()->json($this->postsRepository->deletePost($post));
     }
 }

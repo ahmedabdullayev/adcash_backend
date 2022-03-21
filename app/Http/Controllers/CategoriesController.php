@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\CategoriesRepositoryInterface;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Http\JsonResponse;
@@ -9,6 +10,13 @@ use Illuminate\Http\Response;
 
 class CategoriesController extends Controller
 {
+    private CategoriesRepositoryInterface $categoriesRepository;
+
+    public function __construct(CategoriesRepositoryInterface $categoriesRepository)
+    {
+        $this->categoriesRepository = $categoriesRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +24,7 @@ class CategoriesController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(Category::all());
+        return response()->json($this->categoriesRepository->getAllCategories());
     }
 
     /**
@@ -27,12 +35,7 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategoryRequest $request): JsonResponse
     {
-        $category = new Category;
-        $category->name = $request->input('name');
-
-        $category->save();
-        $validated = $request->validated();
-        return response()->json($validated);
+        return response()->json($this->categoriesRepository->createCategory($request));
     }
 
     /**
@@ -43,7 +46,6 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category): JsonResponse
     {
-        $category->delete();
-        return response()->json($category);
+        return response()->json($this->categoriesRepository->deleteCategory($category));
     }
 }
